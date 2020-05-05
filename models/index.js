@@ -16,3 +16,5 @@ module.exports = {
   Decision: require("./Decision"),
   Option: require("./Option"),
 };
+
+mongoose.set('debug', true);

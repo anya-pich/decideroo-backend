@@ -51,13 +51,11 @@ const register = (req, res) => {
         db.User.create(newUser, (err, savedUser) => {
           if (err) return res.status(500).json({ status: 500, message: err });
           req.session.currentUser = { id: savedUser._id };
-          return res
-            .status(200)
-            .json({
-              status: 200,
-              message: "User registered!",
-              data: savedUser._id,
-            });
+          return res.status(200).json({
+            status: 200,
+            message: "User registered!",
+            data: savedUser._id,
+          });
         });
       });
     });
@@ -73,38 +71,43 @@ const login = (req, res) => {
       .json({ status: 400, message: "Please enter your email and password" });
   }
 
-  db.User.findOne({ email: req.body.email }, (err, foundUser) => {
-    if (err)
-      return res.status(500).json({
-        status: 500,
-        message: "Something went wrong. Please try again",
-      });
-
-    if (!foundUser) {
-      return res
-        .status(400)
-        .json({ status: 400, message: "Email or password is incorrect" });
-    }
-
-    bcrypt.compare(req.body.password, foundUser.password, (err, isMatch) => {
+  db.User.findOne({ email: req.body.email })
+    .select("+email +password")
+    .exec((err, foundUser) => {
       if (err)
         return res.status(500).json({
           status: 500,
           message: "Something went wrong. Please try again",
         });
 
-      if (isMatch) {
-        req.session.currentUser = { id: foundUser._id };
-        return res
-          .status(200)
-          .json({ status: 200, message: "Success", data: foundUser._id });
-      } else {
+      if (!foundUser) {
         return res
           .status(400)
           .json({ status: 400, message: "Email or password is incorrect" });
       }
+
+      bcrypt.compare(req.body.password, foundUser.password, (err, isMatch) => {
+        if (err)
+          return res.status(500).json({
+            status: 500,
+            message: "bcrypt no like",
+            incoming: req.body.password,
+            found: foundUser.password,
+            // message: "Something went wrong. Please try again",
+          });
+
+        if (isMatch) {
+          req.session.currentUser = { id: foundUser._id };
+          return res
+            .status(200)
+            .json({ status: 200, message: "Success", data: foundUser._id });
+        } else {
+          return res
+            .status(400)
+            .json({ status: 400, message: "Email or password is incorrect" });
+        }
+      });
     });
-  });
 };
 
 // POST Logout - Destroy Session

@@ -8,6 +8,7 @@ const UserSchema = mongoose.Schema({
     type: String,
     required: [true, "Email is required"],
     unique: true,
+    select: false,
   },
   decisions: [{
     type: mongoose.Schema.Types.ObjectId,
@@ -19,11 +20,6 @@ const UserSchema = mongoose.Schema({
 		select: false,
   },
 }, {timestamps: true});
-
-UserSchema.pre('deleteOne', function(doc) {
-	console.log('pre delete hook activated');
-	console.log(doc._id);
-})
 
 const User = mongoose.model("User", UserSchema);
 

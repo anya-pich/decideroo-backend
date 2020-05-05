@@ -15,23 +15,26 @@ const show = (req, res) => {
 };
 
 const update = (req, res) => {
-  console.log(req.body);
-  console.log(req.params.id);
-  db.User.findOneAndUpdate(
-    { _id: req.params.id },
-    req.body,
-    { new: true }, // returns updated document
-    (err, updatedProfile) => {
-      console.log(updatedProfile);
-      if (err) {
+  db.User.findById(req.params.id)
+    .select("+email")
+    .exec((err, foundUser) => {
+      if(err) {
         return res.status(400).json({
           status: 400,
-          error: "Something went wrong, please try again.",
-        });
+          error: "Error finding user",
+        })
       }
-      res.json(updatedProfile);
-    }
-  );
+      foundUser.set(req.body);
+      foundUser.save((saveErr, updatedUser) => {
+        if(saveErr) {
+          return res.status(400).json({
+            status: 400,
+            error: "Error saving updated user"
+          })
+        }
+        res.json(updatedUser);
+      })
+  })
 };
 
 const index = (req, res) => {
@@ -47,15 +50,18 @@ const index = (req, res) => {
 };
 
 const remove = (req, res) => {
-  db.User.deleteOne({ _id: req.params.id }, (err, deletedUser) => {
-    if (err) {
-      return res.status(400).json({
-        status: 400,
-        error: "Something went wrong, please try again.",
-      });
+  db.User.deleteOne(
+    {_id: req.params.id},
+    (err, deletedUser) => {
+      if (err) {
+        return res.status(400).json({
+          status: 400,
+          error: 'Something went wrong, please try again.'
+        });
+      }
+      res.json(deletedUser);
     }
-    res.json(deletedUser);
-  });
+  )
 };
 
 module.exports = {
