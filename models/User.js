@@ -15,9 +15,15 @@ const UserSchema = mongoose.Schema({
   }],
   password: {
     type: String,
-    required: [true, "Password is required"],
+		required: [true, "Password is required"],
+		select: false,
   },
 }, {timestamps: true});
+
+UserSchema.pre('deleteOne', function(doc) {
+	console.log('pre delete hook activated');
+	console.log(doc._id);
+})
 
 const User = mongoose.model("User", UserSchema);
 

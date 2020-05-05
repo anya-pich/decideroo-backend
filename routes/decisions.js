@@ -6,18 +6,18 @@ const ctrl = require("../controllers");
 
 // GET all decisions by user e.g. /api/v1/decisions?u=6542215664655
 // or all decisions e.g. /api/v1/decisions
-router.get("/", ctrl.decisionsCtrl.get);
+router.get("/", ctrl.decisions.get);
 
 // POST new decision
-router.post("/", ctrl.decisionsCtrl.create);
+router.post("/", ctrl.decisions.create);
 
 // GET decision by id
-router.get("/:id", ctrl.decisionsCtrl.show);
+router.get("/:id", ctrl.decisions.show);
 
 // UPDATE decision by id
-router.put("/:id", ctrl.decisionsCtrl.update);
+router.put("/:id", ctrl.decisions.update);
 
 // DELETE decision by id
-router.delete("/:id", ctrl.decisionsCtrl.remove);
+router.delete("/:id", ctrl.decisions.remove);
 
 module.exports = router;
