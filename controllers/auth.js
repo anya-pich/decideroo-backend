@@ -90,10 +90,9 @@ const login = (req, res) => {
         if (err)
           return res.status(500).json({
             status: 500,
-            message: "bcrypt no like",
             incoming: req.body.password,
             found: foundUser.password,
-            // message: "Something went wrong. Please try again",
+            message: "Something went wrong. Please try again",
           });
 
         if (isMatch) {

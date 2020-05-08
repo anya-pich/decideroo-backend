@@ -4,7 +4,9 @@ const DecisionSchema = mongoose.Schema(
   {
     author: { type: "ObjectId", ref: "User" },
     title: { type: String, required: true },
-    dueDate: Date,
+    importance: Number,
+    indecisiveness: Number,
+    deadline: String,
     options: [{ type: "ObjectId", ref: "Option" }],
     chosenOption: { type: "ObjectId", ref: "Option" },
   },
