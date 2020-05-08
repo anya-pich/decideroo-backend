@@ -54,6 +54,6 @@ app.use("/api/v1/options", routes.options);
 
 // Server --------------------------------- //
 
-app.listen(3001, () => {
+app.listen((process.env.PORT || 3000), () => {
   return console.log(`Server connected at http://localhost:3001`);
 });

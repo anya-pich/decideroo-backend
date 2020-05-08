@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const dbUrl = process.env.MONGO_URI;
 
 mongoose
-  .connect(dbUrl, {
+  .connect(( process.env.MONGODB_URI || dbUrl ), {
     useNewUrlParser: true,
     useFindAndModify: false,
     useCreateIndex: true,
