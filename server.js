@@ -13,8 +13,10 @@ const routes = require("./routes");
 
 // Handle Cors
 const corsOptions = {
-  // origin: [`http://localhost:3000`],
-  origin: [`https://decideroo.herokuapp.com`],
+  origin: [
+    `http://localhost:3000`,
+    `https://decideroo.herokuapp.com`
+  ],
 
   credentials: true, // allows the session cookie to be sent back and forth from server to client
   optionsSuccessStatus: 200, // some legacy browsers choke on status 204
