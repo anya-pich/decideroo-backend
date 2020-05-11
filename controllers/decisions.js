@@ -3,7 +3,7 @@ const db = require("../models");
 // GET all posts by author e.g. /api/v1/decisions?u=6542215664655
 // or all posts e.g. /api/v1/decisions
 const get = (req, res) => {
-  if (req.query.author) {
+  if (req.query.u) {
     db.Decision.find({ author: req.query.u })
       .sort("-updatedAt")
       .exec((err, decisions) => {
